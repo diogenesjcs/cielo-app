@@ -7,5 +7,3 @@
 *iml
 *.iml
 */build
-fastlane
-.tasks.cache.json
