@@ -12,6 +12,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -19,6 +21,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,12 +35,20 @@ import br.com.cielo.app.ui.base.BaseActivity;
 import br.com.cielo.app.util.DialogFactory;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cielo.orders.domain.Credentials;
+import cielo.orders.domain.Order;
+import cielo.sdk.order.OrderManager;
+import cielo.sdk.order.payment.PaymentError;
+import cielo.sdk.order.payment.PaymentListener;
 
-public class LoginAdapter extends BaseActivity {
+public class CadastroAdapter extends BaseActivity {
 
     Context context;
+    OrderManager orderManager;
 
     CallbackManager callbackManager;
+
+    Button buttonEnviar;
 
 
     @Override
@@ -44,46 +56,42 @@ public class LoginAdapter extends BaseActivity {
         context = this.getApplicationContext();
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.login);
+        setContentView(R.layout.cadastro);
         ButterKnife.bind(this);
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo("br.com.cielo.app", PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+
+        buttonEnviar=(Button)findViewById(R.id.buttonEnviar);
+        buttonEnviar.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Credentials credentials = new Credentials("uFajnJjSXy4R", "TEr8JNhkbNYh");
+                PaymentListener paymentListener = new PaymentListener() {
+                    @Override
+                    public void onStart() {
+                        Log.d("MinhaApp", "O pagamento começou.");
+                    }
+
+                    @Override
+                    public void onPayment(@NotNull Order order) {
+                        Log.d("MinhaApp", "Um pagamento foi realizado.");
+                    }
+
+                    @Override public void onCancel() {
+                        Log.d("MinhaApp", "A operação foi cancelada.");
+                    }
+
+                    @Override public void onError(@NotNull PaymentError paymentError) {
+                        Log.d("MinhaApp", "Houve um erro no pagamento.");
+                    }
+                };
+                orderManager = new OrderManager(credentials, context);
+                Order order = orderManager.createDraftOrder("Pedido de teste");
+                orderManager.checkoutOrder(order.getId(), paymentListener);
             }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        callbackManager = CallbackManager.Factory.create();
-        if(AccessToken.getCurrentAccessToken()!=null && !AccessToken.getCurrentAccessToken().isExpired()){
-            Intent myIntent = new Intent(context, PrincipalAdapter.class);
-            startActivity(myIntent);
-        }
+        });
 
 
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        Intent myIntent = new Intent(context, PrincipalAdapter.class);
-                        startActivity(myIntent);
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                });
     }
 
     @Override
