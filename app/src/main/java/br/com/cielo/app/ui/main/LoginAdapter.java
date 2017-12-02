@@ -2,6 +2,7 @@ package br.com.cielo.app.ui.main;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,35 +38,6 @@ public class LoginAdapter extends RecyclerView.Adapter<LoginAdapter.LoginViewHol
     public LoginViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.login, parent, false);
-        final ViewGroup parentF = parent;
-
-        callbackManager = CallbackManager.Factory.create();
-
-        loginButton = (LoginButton) itemView.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email");
-
-        // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                RecyclerView view = parentF.findViewById(R.id.recycler_view);
-                view.swapAdapter(new PrincipalAdapter(),false);
-            }
-
-            @Override
-            public void onCancel() {
-                RecyclerView view = parentF.findViewById(R.id.recycler_view);
-                view.swapAdapter(new PrincipalAdapter(),false);
-                // App code
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                RecyclerView view = parentF.findViewById(R.id.recycler_view);
-                view.swapAdapter(new PrincipalAdapter(),false);
-                // App code
-            }
-        });
         return new LoginViewHolder(itemView);
     }
 
