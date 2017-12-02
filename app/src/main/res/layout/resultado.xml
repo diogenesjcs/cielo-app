@@ -2,5 +2,82 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#ffffff">
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="QR Code"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#FF1E90FF"
+            android:textSize="80px"/>
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:src="@mipmap/qrcode"/>
+
+
+        <Button
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Imprimir"
+            android:id="@+id/buttonImprimir"
+            android:textSize="40px"
+            android:backgroundTint= "#26aded"
+            android:textStyle="bold"
+            android:textColor="#ffffff"/>
+
+        <Button
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:id="@+id/buttonEmail"
+            android:textSize="40px"
+            android:backgroundTint= "#26aded"
+            android:textStyle="bold"
+            android:textColor="#ffffff"/>
+
+
+        <Button
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mensagem"
+            android:id="@+id/buttonMensagem"
+            android:textSize="40px"
+            android:backgroundTint= "#26aded"
+            android:textStyle="bold"
+            android:textColor="#ffffff"/>
+
+
+        <Button
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continuar"
+            android:id="@+id/buttonContinuar"
+            android:textSize="40px"
+            android:backgroundTint= "#26aded"
+            android:textStyle="bold"
+            android:textColor="#ffffff"/>
+    </LinearLayout>
+
 
 </LinearLayout>

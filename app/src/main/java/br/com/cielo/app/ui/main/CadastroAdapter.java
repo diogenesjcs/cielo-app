@@ -14,10 +14,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-<<<<<<< HEAD
-=======
-import android.widget.TextView;
->>>>>>> master
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -68,49 +64,14 @@ public class CadastroAdapter extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
-                // TODO Auto-generated method stub
-=======
 
-                final TextView email = (TextView) findViewById(R.id.inputEmail);
-                if(validateEmail(email.toString())){
+                Intent i = new Intent(v.getContext(),ResultadoActivity.class);
+                startActivity(i);
 
->>>>>>> master
-                Credentials credentials = new Credentials("uFajnJjSXy4R", "TEr8JNhkbNYh");
-                PaymentListener paymentListener = new PaymentListener() {
-                    @Override
-                    public void onStart() {
-                        Log.d("MinhaApp", "O pagamento começou.");
-                    }
-
-                    @Override
-                    public void onPayment(@NotNull Order order) {
-                        Log.d("MinhaApp", "Um pagamento foi realizado.");
-                    }
-
-                    @Override public void onCancel() {
-                        Log.d("MinhaApp", "A operação foi cancelada.");
-                    }
-
-                    @Override public void onError(@NotNull PaymentError paymentError) {
-                        Log.d("MinhaApp", "Houve um erro no pagamento.");
-                    }
-                };
-                orderManager = new OrderManager(credentials, context);
-                Order order = orderManager.createDraftOrder("Pedido de teste");
-                orderManager.checkoutOrder(order.getId(), paymentListener);
-            }
-<<<<<<< HEAD
-        });
-
-
-=======
             }
         });
 
 
-
->>>>>>> master
     }
 
     @Override
@@ -119,22 +80,7 @@ public class CadastroAdapter extends BaseActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-<<<<<<< HEAD
 
 
 
 }
-=======
-    public final static boolean validateEmail(String txtEmail) {
-        if (txtEmail != null) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(txtEmail).matches();
-        }
-    }
-
-}
-
-
-
->>>>>>> master

@@ -16,7 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Novo Cadastro"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:textSize="40px"
+        android:backgroundTint= "#26aded"
+        android:textStyle="bold"
+        android:textColor="#ffffff"/>
 
     <Button
         android:id="@+id/buttonCadastrado"
@@ -24,6 +28,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cliente Cadastrado"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:textSize="40px"
+        android:backgroundTint= "#26aded"
+        android:textStyle="bold"
+        android:textColor="#ffffff"/>
 
 </LinearLayout>

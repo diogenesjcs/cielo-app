@@ -31,11 +31,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Limpar"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:textSize="40px"
+        android:backgroundTint= "#26aded"
+        android:textStyle="bold"
+        android:textColor="#ffffff"/>
 
     <Button
         android:id="@+id/buttonEnviar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pagar" />
+        android:text="Pagar"
+        android:textSize="40px"
+        android:backgroundTint= "#26aded"
+        android:textStyle="bold"
+        android:textColor="#ffffff"/>
 </LinearLayout>
