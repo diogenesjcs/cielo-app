@@ -5,12 +5,12 @@ apply plugin: 'com.github.triplet.play'
 //apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId 'br.com.cielo.app'
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 25
         testInstrumentationRunner "${applicationId}.runner.RxAndroidJUnitRunner"
         versionCode 1000
@@ -84,7 +84,7 @@ play {
 
 dependencies {
     final PLAY_SERVICES_VERSION = '9.6.1'
-    final SUPPORT_LIBRARY_VERSION = '25.3.1'
+    final SUPPORT_LIBRARY_VERSION = '26.0.2'
     final RETROFIT_VERSION = '2.3.0'
     final DAGGER_VERSION = '2.5'
     final MOCKITO_VERSION = '2.6.2'
@@ -98,6 +98,9 @@ dependencies {
     def daggerCompiler = "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     def jUnit = "junit:junit:4.12"
     def mockito = "org.mockito:mockito-core:$MOCKITO_VERSION"
+
+    compile 'com.cielo.lio:order-manager:0.11.9'
+    compile 'com.facebook.android:facebook-login:[4,5)'
 
     // App Dependencies
     compile "com.google.android.gms:play-services-gcm:$PLAY_SERVICES_VERSION"
@@ -161,6 +164,7 @@ dependencies {
     testCompile "org.hamcrest:hamcrest-library:$HAMCREST_VERSION"
     testCompile "org.hamcrest:hamcrest-integration:$HAMCREST_VERSION"
     testCompile 'org.robolectric:robolectric:3.3'
+    implementation 'com.android.support:design:27.0.2'
 }
 
 // Log out test results to console
