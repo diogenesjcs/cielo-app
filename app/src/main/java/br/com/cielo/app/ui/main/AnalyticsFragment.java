@@ -12,19 +12,20 @@ import br.com.cielo.app.R;
  * Created by diogenes.j.da.silva on 02/12/2017.
  */
 
-public class AnaliticsFragment extends Fragment {
+public class AnalyticsFragment extends Fragment {
+
     // Store instance variables
     private String title;
     private int page;
 
     // newInstance constructor for creating fragment with arguments
-    public static  AnaliticsFragment newInstance(int page, String title) {
-        AnaliticsFragment fragmentSecond = new   AnaliticsFragment();
+    public static  AnalyticsFragment newInstance(int page, String title) {
+        AnalyticsFragment fragmentFirst = new  AnalyticsFragment();
         Bundle args = new Bundle();
         args.putInt("someInt", page);
         args.putString("someTitle", title);
-        fragmentSecond.setArguments(args);
-        return fragmentSecond;
+        fragmentFirst.setArguments(args);
+        return fragmentFirst;
     }
 
     // Store instance variables based on arguments passed
@@ -39,8 +40,7 @@ public class AnaliticsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.vendas, container, false);
+        View view = inflater.inflate(R.layout.analytics, container, false);
         return view;
     }
-
 }

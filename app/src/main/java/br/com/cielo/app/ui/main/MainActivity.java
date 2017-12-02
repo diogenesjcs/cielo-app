@@ -41,69 +41,50 @@ import br.com.cielo.app.data.model.Ribot;
 import br.com.cielo.app.ui.base.BaseActivity;
 import br.com.cielo.app.util.DialogFactory;
 
-public class MainActivity extends BaseActivity implements MainMvpView {
+public class MainActivity extends BaseActivity {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "br.com.cielo.app.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
-    FragmentPagerAdapter adapterViewPager;
 
     @Inject
     MainPresenter mMainPresenter;
-    @Inject
     LoginAdapter mLoginAdapter;
 
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    Context context;
 
     CallbackManager callbackManager;
 
-    /**
-     * Return an Intent to start this Activity.
-     * triggerDataSyncOnCreate allows disabling the background sync service onCreate. Should
-     * only be set to false during testing.
-     */
-    public static Intent getStartIntent(Context context, boolean triggerDataSyncOnCreate) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(EXTRA_TRIGGER_SYNC_FLAG, triggerDataSyncOnCreate);
-        return intent;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        activityComponent().inject(this);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo("br.com.cielo.app", PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
 
         callbackManager = CallbackManager.Factory.create();
+        context = this.getApplicationContext();
+
         if(AccessToken.getCurrentAccessToken()==null || AccessToken.getCurrentAccessToken().isExpired()){
-            mRecyclerView.setAdapter(mLoginAdapter);
+            finishAffinity();
+            Intent myIntent = new Intent(this, LoginAdapter.class);
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(myIntent);
         }
         else{
-            mRecyclerView.setAdapter(new PrincipalAdapter());
+            finishAffinity();
+            Intent myIntent = new Intent(this, PrincipalAdapter.class);
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(myIntent);
         }
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mMainPresenter.attachView(this);
-
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        mRecyclerView.setAdapter(new PrincipalAdapter());
+                        finishAffinity();
+                        Intent myIntent = new Intent(context, PrincipalAdapter.class);
+                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(myIntent);
                     }
 
                     @Override
@@ -116,10 +97,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
                         // App code
                     }
                 });
-
-        if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
-            startService(SyncService.getStartIntent(this));
-        }
     }
 
     @Override
@@ -128,54 +105,5 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        mMainPresenter.detachView();
-    }
-
-    /***** MVP View methods implementation *****/
-
-    @Override
-    public void showError() {
-        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_loading_ribots))
-                .show();
-    }
-
-    public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 2;
-
-        public MyPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        // Returns total number of pages
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
-
-        // Returns the fragment to display for that page
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0: // Fragment # 0 - This will show FirstFragment
-                    return VendasFragment.newInstance(0, "Page # 1");
-                case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return AnaliticsFragment.newInstance(1, "Page # 2");
-                default:
-                    return null;
-            }
-        }
-
-        // Returns the page title for the top indicator
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Page " + position;
-        }
-
-    }
 
 }
