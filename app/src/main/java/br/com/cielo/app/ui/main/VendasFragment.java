@@ -51,7 +51,7 @@ public class VendasFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent i = new Intent(getActivity().getApplicationContext(),CadastroAdapter.class);
+                Intent i = new Intent(getActivity().getApplicationContext(),CadastroActivity.class);
                 startActivity(i);
             }
         });
@@ -62,7 +62,7 @@ public class VendasFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent i = new Intent(getActivity().getApplicationContext(),CadastroAdapter.class);
+                Intent i = new Intent(getActivity().getApplicationContext(),CadastroActivity.class);
                 startActivity(i);
             }
         });

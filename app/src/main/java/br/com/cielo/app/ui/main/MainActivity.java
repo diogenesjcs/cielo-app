@@ -2,22 +2,7 @@ package br.com.cielo.app.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
-import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -26,20 +11,10 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
-import java.util.List;
-
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import br.com.cielo.app.R;
-import br.com.cielo.app.data.SyncService;
-import br.com.cielo.app.data.model.Ribot;
 import br.com.cielo.app.ui.base.BaseActivity;
-import br.com.cielo.app.util.DialogFactory;
 
 public class MainActivity extends BaseActivity {
 
@@ -48,7 +23,7 @@ public class MainActivity extends BaseActivity {
 
     @Inject
     MainPresenter mMainPresenter;
-    LoginAdapter mLoginAdapter;
+    LoginActivity mLoginActivity;
 
     Context context;
 
@@ -66,13 +41,13 @@ public class MainActivity extends BaseActivity {
 
         if(AccessToken.getCurrentAccessToken()==null || AccessToken.getCurrentAccessToken().isExpired()){
             finishAffinity();
-            Intent myIntent = new Intent(this, LoginAdapter.class);
+            Intent myIntent = new Intent(this, LoginActivity.class);
             myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(myIntent);
         }
         else{
             finishAffinity();
-            Intent myIntent = new Intent(this, PrincipalAdapter.class);
+            Intent myIntent = new Intent(this, PrincipalActivity.class);
             myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(myIntent);
         }
@@ -82,7 +57,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         finishAffinity();
-                        Intent myIntent = new Intent(context, PrincipalAdapter.class);
+                        Intent myIntent = new Intent(context, PrincipalActivity.class);
                         myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(myIntent);
                     }

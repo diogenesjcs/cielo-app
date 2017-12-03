@@ -1,40 +1,30 @@
 package br.com.cielo.app.ui.main;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
-import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import javax.inject.Inject;
+import com.facebook.Profile;
+import com.facebook.login.widget.ProfilePictureView;
 
 import br.com.cielo.app.R;
-import br.com.cielo.app.data.SyncService;
 import br.com.cielo.app.ui.base.BaseActivity;
-import br.com.cielo.app.util.DialogFactory;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PrincipalAdapter extends BaseActivity {
+public class PrincipalActivity extends BaseActivity {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "br.com.cielo.app.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
@@ -51,7 +41,11 @@ public class PrincipalAdapter extends BaseActivity {
         context = this.getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.principal);
-        getSupportActionBar().hide();
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.custom_bar);
+        View view =getSupportActionBar().getCustomView();
+
         ButterKnife.bind(this);
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
@@ -81,6 +75,25 @@ public class PrincipalAdapter extends BaseActivity {
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+        LinearLayout linearLayout = (LinearLayout)tabLayout.getChildAt(0);
+        linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(Color.parseColor("#ff33b5e5"));
+        drawable.setSize(1, 1);
+        linearLayout.setDividerPadding(10);
+        linearLayout.setDividerDrawable(drawable);
+
+
+        ProfilePictureView profilePictureView;
+
+        profilePictureView = (ProfilePictureView) findViewById(R.id.action_bar_back);
+
+        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
+        Profile profile = Profile.getCurrentProfile();
+        if(profile!=null)
+            ((TextView)findViewById(R.id.store_name)).setText(profile.getName());
+
+
     }
 
     @Override

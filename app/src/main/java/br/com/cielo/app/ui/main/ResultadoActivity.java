@@ -1,39 +1,23 @@
 package br.com.cielo.app.ui.main;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
+import com.facebook.Profile;
+import com.facebook.login.widget.ProfilePictureView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import javax.inject.Inject;
-
 import br.com.cielo.app.R;
-import br.com.cielo.app.data.SyncService;
 import br.com.cielo.app.ui.base.BaseActivity;
-import br.com.cielo.app.util.DialogFactory;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import cielo.orders.domain.Credentials;
 import cielo.orders.domain.Order;
@@ -59,9 +43,20 @@ public class ResultadoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         context = this.getBaseContext();
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.resultado);
         ButterKnife.bind(this);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.custom_bar);
+
+        ProfilePictureView profilePictureView;
+
+        profilePictureView = (ProfilePictureView) findViewById(R.id.action_bar_back);
+
+        profilePictureView.setProfileId(AccessToken.getCurrentAccessToken().getUserId());
+        Profile profile = Profile.getCurrentProfile();
+        ((TextView)findViewById(R.id.store_name)).setText(profile.getName());
 
         buttonMensagem=findViewById(R.id.buttonMensagem);
         buttonMensagem.setOnClickListener(new View.OnClickListener() {
