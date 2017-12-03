@@ -38,6 +38,7 @@ import butterknife.ButterKnife;
 import cielo.orders.domain.Credentials;
 import cielo.orders.domain.Order;
 import cielo.sdk.order.OrderManager;
+import cielo.sdk.order.ServiceBindListener;
 import cielo.sdk.order.payment.PaymentError;
 import cielo.sdk.order.payment.PaymentListener;
 
@@ -91,39 +92,50 @@ public class ResultadoActivity extends BaseActivity {
 
             }
         });
+        ServiceBindListener serviceBindListener = new ServiceBindListener() {
+            @Override
+            public void onServiceBound() {
+                buttonContinuar=findViewById(R.id.buttonContinuar);
+                buttonContinuar.setOnClickListener(new View.OnClickListener() {
 
-        buttonContinuar=findViewById(R.id.buttonContinuar);
-        buttonContinuar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        PaymentListener paymentListener = new PaymentListener() {
+                            @Override
+                            public void onStart() {
+                                Log.d("MinhaApp", "O pagamento começou.");
+                            }
+
+                            @Override
+                            public void onPayment(@NotNull Order order) {
+                                Log.d("MinhaApp", "Um pagamento foi realizado.");
+                            }
+
+                            @Override public void onCancel() {
+                                Log.d("MinhaApp", "A operação foi cancelada.");
+                            }
+
+                            @Override public void onError(@NotNull PaymentError paymentError) {
+                                Log.d("MinhaApp", "Houve um erro no pagamento.");
+                            }
+                        };
+                        Order order = orderManager.createDraftOrder("Pedido de teste");
+                        orderManager.checkoutOrder(order.getId(), paymentListener);
+
+                    }
+                });
+                // O serviço está vinculado
+            }
 
             @Override
-            public void onClick(View v) {
-
-                Credentials credentials = new Credentials("uFajnJjSXy4R", "TEr8JNhkbNYh");
-                PaymentListener paymentListener = new PaymentListener() {
-                    @Override
-                    public void onStart() {
-                        Log.d("MinhaApp", "O pagamento começou.");
-                    }
-
-                    @Override
-                    public void onPayment(@NotNull Order order) {
-                        Log.d("MinhaApp", "Um pagamento foi realizado.");
-                    }
-
-                    @Override public void onCancel() {
-                        Log.d("MinhaApp", "A operação foi cancelada.");
-                    }
-
-                    @Override public void onError(@NotNull PaymentError paymentError) {
-                        Log.d("MinhaApp", "Houve um erro no pagamento.");
-                    }
-                };
-                orderManager = new OrderManager(credentials, context);
-                Order order = orderManager.createDraftOrder("Pedido de teste");
-                orderManager.checkoutOrder(order.getId(), paymentListener);
-
+            public void onServiceUnbound() {
+                // O serviço foi desvinculado
             }
-        });
+        };
+        Credentials credentials = new Credentials("zK33GGEOY6QA", "McRAnEmKi6Qm");
+        orderManager = new OrderManager(credentials, context);
+        orderManager.bind(this, serviceBindListener);
 
 
     }
